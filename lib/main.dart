@@ -50,6 +50,7 @@ class _HomePageState extends State<HomePage> {
     _refreshWishlist(); // Loading the wishlist when the app starts
   }
 
+  final TextEditingController _IDController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _synopsisController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
@@ -61,16 +62,15 @@ class _HomePageState extends State<HomePage> {
   // It will also be triggered when you want to update an item
   void _showForm(int? id) async {
     if (id != null) {
-      // id == null -> create new item
-      // id != null -> update an existing item
-      final existingJournal =
-          _daftar_.firstWhere((element) => element['id'] == id);
-      _titleController.text = existingJournal['title'];
-      _synopsisController.text = existingJournal['synopsis'];
-      _yearController.text = existingJournal['year'];
-      _castController.text = existingJournal['cast'];
-      _genreController.text = existingJournal['genre'];
-      _statusController.text = existingJournal['status'];
+      final dftr_wishlist =
+          _daftar_.firstWhere((element) => element['ID'] == id);
+      _IDController.text = dftr_wishlist['ID'];
+      _titleController.text = dftr_wishlist['title'];
+      _synopsisController.text = dftr_wishlist['synopsis'];
+      _yearController.text = dftr_wishlist['year'];
+      _castController.text = dftr_wishlist['cast'];
+      _genreController.text = dftr_wishlist['genre'];
+      _statusController.text = dftr_wishlist['status'];
     }
 
     /* TextFormField(
@@ -172,8 +172,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Insert a new wishlist to the database
-  Future<void> _addItem() async {
+  /* Future<void> _addItem() async {
     await SQLHelper.createItem(
+      _IDController.hashCode,
       _titleController.text,
       _synopsisController.text,
       _yearController.hashCode,
@@ -196,49 +197,52 @@ class _HomePageState extends State<HomePage> {
       _statusController.text,
     );
     _refreshWishlist();
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Wishlist Movie and Drama'),
-      ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              itemCount: _daftar_.length,
-              itemBuilder: (context, index) => Card(
-                color: Colors.orange[200],
-                margin: const EdgeInsets.all(15),
-                child: ListTile(
-                    title: Text(_daftar_[index]['title']),
-                    subtitle: Text(_daftar_[index]['synopsis']),
-                    trailing: SizedBox(
-                      width: 100,
-                      child: Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () => _showForm(_daftar_[index]['id']),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () => _deleteItem(_daftar_[index]['id']),
-                          ),
-                        ],
-                      ),
-                    )),
+        appBar: AppBar(
+          title: const Text('Wishlist Movie and Drama'),
+        ),
+        body: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                itemCount: _daftar_.length,
+                itemBuilder: (context, index) => Card(
+                  color: Colors.orange[200],
+                  margin: const EdgeInsets.all(15),
+                  child: ListTile(
+                      title: Text(_daftar_[index]['title']),
+                      subtitle: Text(_daftar_[index]['synopsis']),
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () => _showForm(_daftar_[index]['ID']),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () =>
+                                  _deleteItem(_daftar_[index]['ID']),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
               ),
-            ),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add), onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return FormWishlist();
-          })); },
-          
-    ));
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return FormWishlist();
+            }));
+          },
+        ));
   }
 
   // Delete an item

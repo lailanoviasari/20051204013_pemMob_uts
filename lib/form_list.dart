@@ -12,6 +12,15 @@ class FormWishlist extends StatefulWidget {
 class _FormWishlistState extends State<FormWishlist> {
   List<Map<String, dynamic>> _daftar_ = [];
 
+
+  final TextEditingController _IDController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _synopsisController = TextEditingController();
+  final TextEditingController _yearController = TextEditingController();
+  final TextEditingController _castController = TextEditingController();
+  final TextEditingController _genreController = TextEditingController();
+  final TextEditingController _statusController = TextEditingController();
+
   void _refreshWishlist() async {
     final data = await SQLHelper.getItems();
     setState(() {
@@ -25,19 +34,11 @@ class _FormWishlistState extends State<FormWishlist> {
     _refreshWishlist(); // Loading the wishlist when the app starts
   }
 
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _synopsisController = TextEditingController();
-  final TextEditingController _yearController = TextEditingController();
-  final TextEditingController _castController = TextEditingController();
-  final TextEditingController _genreController = TextEditingController();
-  final TextEditingController _statusController = TextEditingController();
-
   void _showForm(int? id) async {
     if (id != null) {
-      // id == null -> create new item
-      // id != null -> update an existing item
       final dftr_wishlist =
-          _daftar_.firstWhere((element) => element['id'] == id);
+          _daftar_.firstWhere((element) => element['ID'] == id);
+      _IDController.text = dftr_wishlist['ID'];
       _titleController.text = dftr_wishlist['title'];
       _synopsisController.text = dftr_wishlist['synopsis'];
       _yearController.text = dftr_wishlist['year'];
@@ -50,6 +51,7 @@ class _FormWishlistState extends State<FormWishlist> {
   // Insert a new wishlist to the database
   Future<void> _addItem() async {
     await SQLHelper.createItem(
+      _IDController.hashCode,
       _titleController.text,
       _synopsisController.text,
       _yearController.hashCode,
@@ -84,6 +86,18 @@ class _FormWishlistState extends State<FormWishlist> {
       body: ListView(
         padding: EdgeInsets.all(10),
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _IDController,
+              decoration: InputDecoration(
+                  labelText: 'ID',
+                  hintText: 'Must entry the ID of movie or drama',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  )),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -159,7 +173,20 @@ class _FormWishlistState extends State<FormWishlist> {
            ElevatedButton(
               onPressed: () async {
 
-                
+                if (_IDController.text == null) {
+                  await _addItem();
+                }
+
+                if (_IDController.text != null) {
+                  await _updateItem(_IDController.hashCode);
+                }
+
+                for (int i = 0; i < _daftar_.length; i++) {
+
+                  for (int j = 0; j < 8; j++) {
+                    
+                  }
+                }
 
                 // Clear the text fields
                 _titleController.text = '';
@@ -171,7 +198,7 @@ class _FormWishlistState extends State<FormWishlist> {
 
 Navigator.push(context, MaterialPageRoute(builder: (context) => const MyApp()));
               },
-              child: Text('Update'),
+              child: Text('Create'),
             ),
         ],
       ),

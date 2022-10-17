@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart' as sql;
 class SQLHelper {
   static Future<void> createTables(sql.Database database) async {
     await database.execute("""CREATE TABLE items(
-        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        ID INTEGER PRIMARY KEY NOT NULL,
         title TEXT,
         synopsis TEXT,
         year TEXT,
@@ -15,7 +15,7 @@ class SQLHelper {
       )
       """);
   }
-// id: the id of a item
+// ID: the id of a item
 // title : judul film atau drama yang ingin ditonton, 
 // synopsis : deskripsi singkat tentang film atau drama, 
 // year : tahun rilis, 
@@ -35,10 +35,10 @@ class SQLHelper {
   }
 
   // Create new item (journal)
-  static Future<int> createItem(String title, String? synopsis, int year, String cast, String genre, String status) async {
+  static Future<int> createItem(int ID, String title, String synopsis, int year, String cast, String genre, String status) async {
     final db = await SQLHelper.db();
 
-    final data = {'title': title, 'synopsis': synopsis, 'year': year, 'cast': cast, 'genre': genre, 'status': status};
+    final data = {'ID': ID, 'title': title, 'synopsis': synopsis, 'year': year, 'cast': cast, 'genre': genre, 'status': status};
     final id = await db.insert('items', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
@@ -59,7 +59,7 @@ class SQLHelper {
 
   // Update an item by id
   static Future<int> updateItem(
-      int id, String title, String? synopsis, int year, String cast, String genre, String status) async {
+      int id, String title, String synopsis, int year, String cast, String genre, String status) async {
     final db = await SQLHelper.db();
 
     final data = {
