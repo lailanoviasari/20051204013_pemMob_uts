@@ -12,15 +12,6 @@ class FormWishlist extends StatefulWidget {
 class _FormWishlistState extends State<FormWishlist> {
   List<Map<String, dynamic>> _daftar_ = [];
 
-
-  final TextEditingController _IDController = TextEditingController();
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _synopsisController = TextEditingController();
-  final TextEditingController _yearController = TextEditingController();
-  final TextEditingController _castController = TextEditingController();
-  final TextEditingController _genreController = TextEditingController();
-  final TextEditingController _statusController = TextEditingController();
-
   void _refreshWishlist() async {
     final data = await SQLHelper.getItems();
     setState(() {
@@ -34,38 +25,27 @@ class _FormWishlistState extends State<FormWishlist> {
     _refreshWishlist(); // Loading the wishlist when the app starts
   }
 
-  void _showForm(int? id) async {
-    if (id != null) {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _synopsisController = TextEditingController();
+  final TextEditingController _yearController = TextEditingController();
+  final TextEditingController _castController = TextEditingController();
+  final TextEditingController _genreController = TextEditingController();
+  final TextEditingController _statusController = TextEditingController();
+
+  void list(int? id) async {
       final dftr_wishlist =
-          _daftar_.firstWhere((element) => element['ID'] == id);
-      _IDController.text = dftr_wishlist['ID'];
+          _daftar_.firstWhere((element) => element['id'] == id);
       _titleController.text = dftr_wishlist['title'];
       _synopsisController.text = dftr_wishlist['synopsis'];
       _yearController.text = dftr_wishlist['year'];
       _castController.text = dftr_wishlist['cast'];
       _genreController.text = dftr_wishlist['genre'];
       _statusController.text = dftr_wishlist['status'];
-    }
   }
 
   // Insert a new wishlist to the database
   Future<void> _addItem() async {
     await SQLHelper.createItem(
-      _IDController.hashCode,
-      _titleController.text,
-      _synopsisController.text,
-      _yearController.hashCode,
-      _castController.text,
-      _genreController.text,
-      _statusController.text,
-    );
-    _refreshWishlist();
-  }
-
-  // Update an existing wishlist
-  Future<void> _updateItem(int id) async {
-    await SQLHelper.updateItem(
-      id,
       _titleController.text,
       _synopsisController.text,
       _yearController.hashCode,
@@ -78,26 +58,13 @@ class _FormWishlistState extends State<FormWishlist> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text('Wishlist Movie and Drama'),
       ),
       body: ListView(
         padding: EdgeInsets.all(10),
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _IDController,
-              decoration: InputDecoration(
-                  labelText: 'ID',
-                  hintText: 'Must entry the ID of movie or drama',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  )),
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -170,39 +137,27 @@ class _FormWishlistState extends State<FormWishlist> {
                   )),
             ),
           ),
-           ElevatedButton(
-              onPressed: () async {
+          ElevatedButton(
+            onPressed: () async {
+              
+              await _addItem();
 
-                if (_IDController.text == null) {
-                  await _addItem();
-                }
+              // Clear the text fields
+              _titleController.text = '';
+              _synopsisController.text = '';
+              _yearController.text = '';
+              _castController.text = '';
+              _genreController.text = '';
+              _statusController.text = '';
 
-                if (_IDController.text != null) {
-                  await _updateItem(_IDController.hashCode);
-                }
-
-                for (int i = 0; i < _daftar_.length; i++) {
-
-                  for (int j = 0; j < 8; j++) {
-                    
-                  }
-                }
-
-                // Clear the text fields
-                _titleController.text = '';
-                _synopsisController.text = '';
-                _yearController.text = '';
-                _castController.text = '';
-                _genreController.text = '';
-                _statusController.text = '';
-
-Navigator.push(context, MaterialPageRoute(builder: (context) => const MyApp()));
-              },
-              child: Text('Create'),
-            ),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const MyApp()));
+            },
+            child: Text('Create'),
+          ),
         ],
       ),
-    ));
+    );
     //),
     //);
   }

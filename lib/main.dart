@@ -1,4 +1,3 @@
-// main.dart
 import 'package:flutter/material.dart';
 import 'databaseHelper.dart';
 import 'form_list.dart';
@@ -50,7 +49,6 @@ class _HomePageState extends State<HomePage> {
     _refreshWishlist(); // Loading the wishlist when the app starts
   }
 
-  final TextEditingController _IDController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _synopsisController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
@@ -62,119 +60,127 @@ class _HomePageState extends State<HomePage> {
   // It will also be triggered when you want to update an item
   void _showForm(int? id) async {
     if (id != null) {
-      final dftr_wishlist =
-          _daftar_.firstWhere((element) => element['ID'] == id);
-      _IDController.text = dftr_wishlist['ID'];
-      _titleController.text = dftr_wishlist['title'];
-      _synopsisController.text = dftr_wishlist['synopsis'];
-      _yearController.text = dftr_wishlist['year'];
-      _castController.text = dftr_wishlist['cast'];
-      _genreController.text = dftr_wishlist['genre'];
-      _statusController.text = dftr_wishlist['status'];
+      // id == null -> create new item
+      // id != null -> update an existing item
+      final existingJournal =
+          _daftar_.firstWhere((element) => element['id'] == id);
+      _titleController.text = existingJournal['title'];
+      _synopsisController.text = existingJournal['synopsis'];
+      _yearController.text = existingJournal['year'];
+      _castController.text = existingJournal['cast'];
+      _genreController.text = existingJournal['genre'];
+      _statusController.text = existingJournal['status'];
     }
 
-    /* TextFormField(
-        //margin: const EdgeInsets.all(5),
-        children: Column(
-          children: [ */
-    /* showBottomSheet(
+    showModalBottomSheet(
         context: context,
-        builder: (_) => Container(
-            padding: const EdgeInsets.all(15),
-            width: double.infinity,
-            height: 800,
-            child: SingleChildScrollView(
-                child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                TextField(
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                      labelText: 'Title',
-                      hintText: 'Title of the movie or drama',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      )),
-                ),
-                TextField(
-                  controller: _synopsisController,
-                  decoration: InputDecoration(
-                      labelText: 'Synopsis',
-                      hintText: 'Short description of the movie or drama',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      )),
-                ),
-                TextField(
-                  controller: _yearController,
-                  decoration: InputDecoration(
-                      labelText: 'Year',
-                      hintText: 'Year of release of the movie or drama',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      )),
-                ),
-                TextField(
-                  controller: _castController,
-                  decoration: InputDecoration(
-                      labelText: 'Cast',
-                      hintText: 'Actor in the movie or drama',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      )),
-                ),
-                TextField(
-                  controller: _genreController,
-                  decoration: InputDecoration(
-                      labelText: 'Genre',
-                      hintText: 'Type of the movie or drama',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      )),
-                ),
-                TextField(
-                  controller: _statusController,
-                  decoration: InputDecoration(
-                      labelText: 'Status',
-                      hintText: 'watched or unwatched',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      )),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    // Save new journal
-                    if (id == null) {
-                      await _addItem();
-                    }
+        elevation: 5,
+        isScrollControlled: true,
+        builder: (_) =>  Container(
+              padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+              child:   ListView(
+                /* mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end, */
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _titleController,
+                      decoration: InputDecoration(
+                          labelText: 'Title',
+                          hintText: 'Title of the movie or drama',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _synopsisController,
+                      decoration: InputDecoration(
+                          labelText: 'Synopsis',
+                          hintText: 'Short description of the movie or drama',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _yearController,
+                      decoration: InputDecoration(
+                          labelText: 'Year',
+                          hintText: 'Year of release of the movie or drama',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _castController,
+                      decoration: InputDecoration(
+                          labelText: 'Cast',
+                          hintText: 'Actor in the movie or drama',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _genreController,
+                      decoration: InputDecoration(
+                          labelText: 'Genre',
+                          hintText: 'Type of the movie or drama',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _statusController,
+                      decoration: InputDecoration(
+                          labelText: 'Status',
+                          hintText: 'watched or unwatched',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          )),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (id != null) {
+                        await _updateItem(id);
+                      }
 
-                    if (id != null) {
-                      await _updateItem(id);
-                    }
+                      // Clear the text fields
+                      _titleController.text = '';
+                      _synopsisController.text = '';
+                      _yearController.text = '';
+                      _castController.text = '';
+                      _genreController.text = '';
+                      _statusController.text = '';
 
-                    // Clear the text fields
-                    _titleController.text = '';
-                    _synopsisController.text = '';
-                    _yearController.text = '';
-                    _castController.text = '';
-                    _genreController.text = '';
-                    _statusController.text = '';
-
-                    // Close the bottom sheet
-                    // ignore: use_build_context_synchronously
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(id == null ? 'Create New' : 'Update'),
-                ),
-              ],
-            )))); */
+                      // Close the bottom sheet
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(id == null ? 'Create New' : 'Update'),
+                  )
+                ],
+              ),
+            ));
   }
 
   // Insert a new wishlist to the database
   /* Future<void> _addItem() async {
     await SQLHelper.createItem(
-      _IDController.hashCode,
       _titleController.text,
       _synopsisController.text,
       _yearController.hashCode,
@@ -183,7 +189,7 @@ class _HomePageState extends State<HomePage> {
       _statusController.text,
     );
     _refreshWishlist();
-  }
+  } */
 
   // Update an existing wishlist
   Future<void> _updateItem(int id) async {
@@ -197,7 +203,7 @@ class _HomePageState extends State<HomePage> {
       _statusController.text,
     );
     _refreshWishlist();
-  } */
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -223,12 +229,12 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             IconButton(
                               icon: const Icon(Icons.edit),
-                              onPressed: () => _showForm(_daftar_[index]['ID']),
+                              onPressed: () => _showForm(_daftar_[index]['id']),
                             ),
                             IconButton(
                               icon: const Icon(Icons.delete),
                               onPressed: () =>
-                                  _deleteItem(_daftar_[index]['ID']),
+                                  _deleteItem(_daftar_[index]['id']),
                             ),
                           ],
                         ),
@@ -256,6 +262,7 @@ class _HomePageState extends State<HomePage> {
               TextButton(
                   onPressed: () async {
                     await SQLHelper.deleteItem(id);
+                    // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text('Successfully deleted a wishlist!'),
                     ));
