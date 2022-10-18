@@ -169,7 +169,9 @@ class _HomePageState extends State<HomePage> {
                       _statusController.text = '';
 
                       // Close the bottom sheet
-                      Navigator.of(context).pop();
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return HomePage();
+            }));
                     },
                     child: Text(id == null ? 'Create New' : 'Update'),
                   )
@@ -222,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                   margin: const EdgeInsets.all(15),
                   child: ListTile(
                       title: Text(_daftar_[index]['title']),
-                      subtitle: Text(_daftar_[index]['synopsis']),
+                      subtitle: Text(_daftar_[index]['status']),
                       trailing: SizedBox(
                         width: 100,
                         child: Row(
