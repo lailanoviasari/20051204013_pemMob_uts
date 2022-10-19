@@ -1,30 +1,20 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:flutter_uts_8/main.dart';
 import 'databaseHelper.dart';
 
-class FormWishlist extends StatefulWidget {
-  const FormWishlist({Key? key}) : super(key: key);
+class ViewWishlist extends StatefulWidget {
+  const ViewWishlist({Key? key}) : super(key: key);
 
   @override
-  State<FormWishlist> createState() => _FormWishlistState();
+  State<ViewWishlist> createState() => ViewWishlist_state();
 }
 
-class _FormWishlistState extends State<FormWishlist> {
+class ViewWishlist_state extends State<ViewWishlist> {
   List<Map<String, dynamic>> _daftar_ = [];
 
-  void _refreshWishlist() async {
-    final data = await SQLHelper.getItems();
-    setState(() {
-      _daftar_ = data;
-    });
-  }
 
-  @override
-  void initState() {
-    super.initState();
-    _refreshWishlist(); // Loading the wishlist when the app starts
-  }
-
+  final data = SQLHelper.getItems();
+  
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _synopsisController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
@@ -42,19 +32,13 @@ class _FormWishlistState extends State<FormWishlist> {
       _genreController.text = dftr_wishlist['genre'];
       _statusController.text = dftr_wishlist['status'];
   }
-
-  // Insert a new wishlist to the database
-  Future<void> _addItem() async {
-    int year = int.parse(_yearController.text);
-    await SQLHelper.createItem(
-      _titleController.text,
-      _synopsisController.text,
-      year,
-      _castController.text,
-      _genreController.text,
-      _statusController.text,
-    );
-    _refreshWishlist();
+  
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+  
   }
 
   @override
@@ -166,3 +150,4 @@ class _FormWishlistState extends State<FormWishlist> {
     //);
   }
 }
+ */

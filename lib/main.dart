@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Wishlist Movie and Drama',
         theme: ThemeData(
-          primarySwatch: Colors.orange,
+          primarySwatch: Colors.pink
         ),
         home: const HomePage());
   }
@@ -76,9 +76,9 @@ class _HomePageState extends State<HomePage> {
         context: context,
         elevation: 5,
         isScrollControlled: true,
-        builder: (_) =>  Container(
+        builder: (_) => Container(
               padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
-              child:   ListView(
+              child: ListView(
                 /* mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.end, */
                 children: [
@@ -110,6 +110,7 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       controller: _yearController,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                           labelText: 'Year',
                           hintText: 'Year of release of the movie or drama',
@@ -169,9 +170,10 @@ class _HomePageState extends State<HomePage> {
                       _statusController.text = '';
 
                       // Close the bottom sheet
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return HomePage();
-            }));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return HomePage();
+                      }));
                     },
                     child: Text(id == null ? 'Create New' : 'Update'),
                   )
@@ -195,11 +197,12 @@ class _HomePageState extends State<HomePage> {
 
   // Update an existing wishlist
   Future<void> _updateItem(int id) async {
+    int year = int.parse(_yearController.text);
     await SQLHelper.updateItem(
       id,
       _titleController.text,
       _synopsisController.text,
-      _yearController.hashCode,
+      year,
       _castController.text,
       _genreController.text,
       _statusController.text,
@@ -211,17 +214,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Wishlist Movie and Drama'),
-        ),
+          title: const Text('Wishlist Movie and Drama', style: TextStyle(color: Colors.black))),
+        
         body: _isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : ListView.builder(
+            : Container(child: ListView.builder(
                 itemCount: _daftar_.length,
                 itemBuilder: (context, index) => Card(
-                  color: Colors.orange[200],
-                  margin: const EdgeInsets.all(15),
+                  color: Colors.pink,
+                  margin: const EdgeInsets.all(10),
                   child: ListTile(
                       title: Text(_daftar_[index]['title']),
                       subtitle: Text(_daftar_[index]['status']),
@@ -229,27 +232,44 @@ class _HomePageState extends State<HomePage> {
                         width: 100,
                         child: Row(
                           children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () => _showForm(_daftar_[index]['id']),
+                            Flexible(
+                              flex: 1,
+                              child: IconButton(
+                                  icon: const Icon(Icons.visibility),
+                                  onPressed: () {}),
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () =>
-                                  _deleteItem(_daftar_[index]['id']),
+                            Flexible(
+                                flex: 1,
+                                child: IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () =>
+                                      _showForm(_daftar_[index]['id']),
+                                )),
+                            Flexible(
+                              flex: 1,
+                              child: IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () =>
+                                    _deleteItem(_daftar_[index]['id']),
+                              ),
                             ),
                           ],
                         ),
                       )),
                 ),
               ),
+              color: Colors.white,
+              margin: EdgeInsets.all(20),
+              ),
+              backgroundColor: Colors.black,
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
+          foregroundColor: Colors.black,
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return FormWishlist();
             }));
-          },
+          }
         ));
   }
 
