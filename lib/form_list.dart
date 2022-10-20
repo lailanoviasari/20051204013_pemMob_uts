@@ -85,7 +85,6 @@ class _FormWishlistState extends State<FormWishlist> {
               decoration: InputDecoration(
                   labelText: 'Synopsis',
                   hintText: 'Short description of the movie or drama',
-                  hintMaxLines: 5,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   )),
