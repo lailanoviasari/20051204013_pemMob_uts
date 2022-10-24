@@ -33,14 +33,14 @@ class _FormWishlistState extends State<FormWishlist> {
   final TextEditingController _statusController = TextEditingController();
 
   void list(int? id) async {
-      final dftr_wishlist =
+      final dftrWishlist =
           _daftar_.firstWhere((element) => element['id'] == id);
-      _titleController.text = dftr_wishlist['title'];
-      _synopsisController.text = dftr_wishlist['synopsis'];
-      _yearController.text = dftr_wishlist['year'];
-      _castController.text = dftr_wishlist['cast'];
-      _genreController.text = dftr_wishlist['genre'];
-      _statusController.text = dftr_wishlist['status'];
+      _titleController.text = dftrWishlist['title'];
+      _synopsisController.text = dftrWishlist['synopsis'];
+      _yearController.text = dftrWishlist['year'];
+      _castController.text = dftrWishlist['cast'];
+      _genreController.text = dftrWishlist['genre'];
+      _statusController.text = dftrWishlist['status'];
   }
 
   // Insert a new wishlist to the database
@@ -61,10 +61,10 @@ class _FormWishlistState extends State<FormWishlist> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Wishlist Movie and Drama'),
+        title: const Text('Wishlist Movie and Drama'),
       ),
       body: ListView(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -156,7 +156,7 @@ class _FormWishlistState extends State<FormWishlist> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const MyApp()));
             },
-            child: Text('Create'),
+            child: const Text('Create'),
           ),
         ],
       ),

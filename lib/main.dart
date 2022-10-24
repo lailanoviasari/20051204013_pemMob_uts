@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           )),
-                      minLines: 5,
+                      maxLines: 5,
                     ),
                   ),
                   Padding(
@@ -243,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           )),
-                      minLines: 5,
+                      maxLines: 5,
                     ),
                   ),
                   Padding(
@@ -337,8 +337,8 @@ class _HomePageState extends State<HomePage> {
                                 flex: 1,
                                 child: IconButton(
                                     icon: const Icon(Icons.visibility),
-                                    onPressed: () =>
-                                        _viewForm(_daftar_[index]['id'])),
+                                    onPressed: ()  =>
+                                        _viewForm(_daftar_[index]['id']), )
                               ),
                               Flexible(
                                   flex: 1,
