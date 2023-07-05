@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flutter_uts_8">
    <application
-        android:label="flutter_uts_8"
+        android:label="Wishlist Movie and Drama"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/icon_wishlist_movie_drama">
         <activity
             android:name=".MainActivity"
             android:exported="true"
