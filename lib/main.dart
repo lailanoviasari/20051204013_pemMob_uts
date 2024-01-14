@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 5,
         isScrollControlled: true,
         builder: (_) => Container(
-              padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+              padding: EdgeInsets.fromLTRB(10, 100, 10, 10),
               child: ListView(
                 /* mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.end, */
@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 5,
         isScrollControlled: true,
         builder: (_) => Container(
-              padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
+              padding: EdgeInsets.fromLTRB(10, 100, 10, 10),
               child: ListView(
                 children: [
                   Padding(
